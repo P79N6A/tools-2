@@ -45,10 +45,9 @@ while ($line = fgets(STDIN)) {
             if (isset($options["k"])) {
                 $item []= $line;
             }
-            if($item[0] == '') {
-            fwrite(STDOUT, $line);
-            
-            }
+            #if($item[0] == '') {
+            #fwrite(STDOUT, $line);
+            #}
             fwrite(STDOUT, implode("\t", $item)."\n");
         } else {
             fwrite(STDERR, $line."\n");
