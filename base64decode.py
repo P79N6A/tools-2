@@ -6,11 +6,8 @@ import sys
 import json
 
 def encode_string(line):
-    url = base64.encodestring(line)
-    dict = {}
-    dict['url'] = url
-    dict['module'] = 'Bank'
-    return json.dumps(dict)
+    line = base64.encodestring(line)
+    return line
 
 def decode_string(line):
     js = json.loads(line)
@@ -20,7 +17,7 @@ def decode_string(line):
 for line in sys.stdin:
     line = line.strip()
     if sys.argv[1] == '-d':
-        url = decode_string(line)
+        line = decode_string(line)
     if sys.argv[1] == '-e':
-        url = encode_string(line)
-    print url
+        line = encode_string(line)
+    print line

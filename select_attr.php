@@ -1,4 +1,5 @@
 <?php
+//php ../select_attr.php -k -f 1 name
 $options = getopt("kf:");
 foreach(array("k"=>1, "f"=>2) as $k=>$c) {
     if (isset($options[$k])) {
