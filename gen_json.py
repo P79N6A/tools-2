@@ -56,7 +56,7 @@ fields = []
 user = ""
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "f:")
+    opts, args = getopt.getopt(sys.argv[1:], "u:f:")
 except getopt.GetoptError, err:
     # print help information and exit:
     print str(err) # will print something like "option -a not recognized"
@@ -66,11 +66,14 @@ for o, a in opts:
     if o in ["-h"]:
         usage()
         sys.exit(1)
+    if o in ["-u"]:
+        user = a
     if o in ["-f"]:
         fields = a.split(",")
         field_num = len(fields)
 
 int_fields = "main_cat_new".split()
+float_fields = "prob".split()
 
 for line in sys.stdin:
     line = line.strip()
