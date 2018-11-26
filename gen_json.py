@@ -53,6 +53,7 @@ def get_fields(obj):
 
 field_num = 0
 fields = []
+user = ""
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], "f:")
@@ -79,9 +80,14 @@ for line in sys.stdin:
     obj = None
     if len(data) != field_num:
         print >> sys.stderr, "data format error"
+        print >> sys.stderr, line
     ret = {}
     for data_item, field_item in zip(data, fields):
         if field_item in int_fields:
             data_item = int(data_item)
+        if field_item in float_fields:
+            data_item = float(data_item)
         ret[field_item] = data_item
+    if user:
+        ret["user"] = user
     print >> sys.stdout, json.dumps(ret, ensure_ascii=False)
