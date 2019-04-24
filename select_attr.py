@@ -35,6 +35,8 @@ def get_fields(obj):
     ret = []
     for field in select_fields:
         item = select(field.split("."), obj)
+        if replace_flag:
+            item = item.replace("\t", " ").replace("\n", "")
         if output_json:
             ret.append((field,item))
         else:
@@ -48,9 +50,10 @@ output_json = False
 list_type = False
 field_num = 0
 select_fields = []
+replace_flag = False
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "kljf:s:")
+    opts, args = getopt.getopt(sys.argv[1:], "rkljf:s:")
 except getopt.GetoptError, err:
     # print help information and exit:
     print str(err) # will print something like "option -a not recognized"
@@ -70,14 +73,17 @@ for o, a in opts:
         output_json = True
     if o in ["-s"]:
         select_fields = a.split(",")
+    if o in ["-r"]:
+        #替换数据中的\t,\n
+        replace_flag = True
 
-try:
-    for line in sys.stdin:
-        line = line.strip()
-        if not line:
-            continue
-        data = line.split("\t")
-        obj = None
+for line in sys.stdin:
+    line = line.strip()
+    if not line:
+        continue
+    data = line.split("\t")
+    obj = None
+    try:
         if len(data) > field_num:
             obj = json.loads(data[field_num])
         if isinstance(obj, dict):
@@ -93,5 +99,6 @@ try:
                 print >> sys.stdout, "\t".join(ret).encode("utf-8")
         else:
             print >> sys.stderr, line
-except Exception,e:
-    pass
+    except Exception,e:
+        print >> sys.stderr, line
+        sys.exit()
